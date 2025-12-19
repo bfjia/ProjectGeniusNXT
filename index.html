@@ -27,10 +27,11 @@
 							<p id="intro-text">
 								Hello <br> The home page is currently on vacation <br> Have a great day.
 							</p>
-							
+						<!--	
 						<ul class="actions">
 							<li><a href="profile.html" class="button large">> See My Profile <</a></li>
 						</ul>
+						-->
 					</div>
 
 				<!-- Header -->
@@ -89,7 +90,7 @@
 					const introText = document.getElementById('intro-text');
 					if (introText) {
 						introText.innerHTML = ` 
-							Hello, the home page is currently on vacation. <br>
+							Hello, the website is currently on vacation. <br>
 							In its place, enjoy a view captured by <a href="${dataReturn.permalink}" target="_blank" rel="noopener"> u/${dataReturn.author} </a>. <br>
 							`;
 					}
