@@ -3223,7 +3223,9 @@ input, select, textarea {
 		-ms-transition: opacity 0.5s ease;
 		transition: opacity 0.5s ease;
 		position: relative;
-		z-index: 1;
+		min-height: 100vh;
+		min-width: 100vw;
+		z-index: 0;
 		overflow: hidden;
 	}
 
@@ -3231,12 +3233,12 @@ input, select, textarea {
 			position: absolute;
 			top: 0;
 			left: 0;
-			width: 100%;
-			height: 100%;
+			width: 110vw;
+			height: 110vh;
 			background-color: #212931;
 			background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/bg.jpg");
 			background-size: auto,auto, 100% auto;
-			background-position: center,center,top center;
+			background-position: center,center,center;
 			background-repeat: repeat,no-repeat,no-repeat;
 			background-attachment: scroll,scroll,scroll;
 			z-index: 0;
@@ -3312,8 +3314,15 @@ input, select, textarea {
 		text-align: center;
 		z-index: 1;
 		min-height: 85vh;
+		opacity: 1;
+		transform: translateY(0);
+		transition: opacity 0.3s ease, transform 0.3s ease;
 	}
-	
+	#intro.hidden {
+		opacity: 0;
+		transform: translateY(10px);
+		pointer-events: none;
+	}
 .logo-panel {
     background: rgba(0, 0, 0, 0.4); /* transparent grey */
     padding: 0.5rem 1rem;
@@ -3323,19 +3332,9 @@ input, select, textarea {
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
 }
-.logo-panel-grey {
-    background: rgba(0, 0, 0, 0.45); /* transparent grey */
-    padding: 0.5rem 1rem;
-    border-radius: 0.75rem;
-    display: inline-block;
-    margin-bottom: 2rem;
-    /* optional glass effect */
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
 
 .intro-logo {
-    max-width: 500px;
+    max-width: 450px;
     width: 100%;
 	margin-left: auto;
 	margin-right: auto;
@@ -3424,7 +3423,8 @@ input, select, textarea {
 		#intro p {
 			font-size: 1.25rem;
 			font-style: italic;
-			margin-top: -0.25rem;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
 			text-align: center;
 		}
 
@@ -4429,6 +4429,11 @@ input, select, textarea {
 		width: calc(100% - 4rem);
 		max-width: 72rem;
 		z-index: 2;
+	}
+	#copyright.hidden {
+		opacity: 0;
+		transform: translateY(10px);
+		
 	}
 
 		#copyright input, #copyright select, #copyright textarea {

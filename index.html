@@ -14,10 +14,9 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in">
-
 				<!-- Intro -->
-					<div id="intro">					
-						<div class="logo-panel">
+					<div id="intro">
+						<div class="logo-panel" id = "logo-box">
 							<img
 								src="./img/bfjia.png"
 								alt="BFJIA"
@@ -27,10 +26,8 @@
 								<br> Hello <br> The home page is currently on vacation. <br> I was going to load a nice view for you, but something went wrong. Try refreshing :)
 							</p>
 							<a href="https://www.bfjia.net/profile" class="button large"> Profile ➜</a>
-							<p> <u>Hide</u> </p>
-
+							<p id = "Hide"> <u>Hide</u> </p>
 						</div>
-
 						<!--
 						<ul class="actions">
 							<li><a href="https://www.bfjia.net/presentations" class="button large">> Presentations <</a></li>
@@ -64,6 +61,68 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
+			async function setRandomRedditBackgroundWithVerticalDetection() {
+				const url = "https://www.reddit.com/r/EarthPorn/top/.json?sort=top&t=week";
+				const response = await fetch("https://corsproxy.io/?" + encodeURIComponent(url));
+				const json = await response.json();
+
+				const posts = json.data.children.filter(
+					p => p.data.post_hint === 'image'
+				);
+
+				const chosen = posts[Math.floor(Math.random() * posts.length)];
+
+				const imageUrl =
+					chosen.data.preview?.images?.[0]?.source?.url
+						?.replace(/&amp;/g, '&') ||
+					chosen.data.url;
+
+				const dataReturn = {
+					url: imageUrl,
+					permalink: 'https://www.reddit.com' + chosen.data.permalink,
+					author: chosen.data.author,
+					title: chosen.data.title
+				};
+
+				const bg = document.querySelector('#wrapper > .bg');
+				if (!bg) return;
+
+				// Load image to detect orientation
+				const img = new Image();
+				img.src = dataReturn.url;
+
+				img.onload = () => {
+					const isPortrait = img.height > img.width;
+
+					bg.style.backgroundImage =
+						'url("../../images/overlay.png"), ' +
+						'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
+						`url("${dataReturn.url}")`;
+
+					if (isPortrait) {
+						// Portrait: show middle section
+						bg.style.backgroundSize = 'auto, auto, cover';
+						bg.style.backgroundPosition = 'center, center, center';
+					} else {
+						// Landscape: fill screen normally
+						bg.style.backgroundSize = 'auto, auto, cover';
+						bg.style.backgroundPosition = 'center, center, center';
+					}
+				};
+
+				// Update intro text
+				const introText = document.getElementById('intro-text');
+				if (introText) {
+					introText.innerHTML = `
+						Hello, the home page is currently on vacation. <br>
+						In its place, enjoy this view captured by
+						<a href="${dataReturn.permalink}" target="_blank" rel="noopener">
+							u/${dataReturn.author}
+						</a>.
+					`;
+				}
+			}
+
 				async function setRandomRedditBackground() {
 					//const response = await fetch(
 					//	'https://www.reddit.com/r/EarthPorn/top/.json?sort=top&t=day'
@@ -111,23 +170,26 @@
 					}
 				}
 
-				setRandomRedditBackground();
+				setRandomRedditBackgroundWithVerticalDetection();
 			</script>
 			<script>
-				document.querySelector('.logo-panel').addEventListener('click', () => {
-					document.getElementById('intro').style.display = 'none';
-					document.getElementById('copyright').style.display = 'none';
-				});
-			</script>
-			<script>
-				const bg = document.querySelector('#wrapper > .bg');
 				const intro = document.getElementById('intro');
 				const copyright = document.getElementById('copyright');
+				const bg = document.querySelector('#wrapper > .bg');
+
+				document.getElementById('Hide').addEventListener('click', () => {
+					//document.getElementById('intro').style.display = 'none';
+					intro.classList.add('hidden'); 
+					copyright.classList.add('hidden'); 
+					//document.getElementById('copyright').style.display = 'none';
+				});
 
 				if (bg) {
 					bg.addEventListener('click', () => {
-						if (intro) intro.style.display = 'block';
-						if (copyright) copyright.style.display = 'block';
+						//if (intro) intro.style.display = 'block';
+						intro.classList.remove('hidden'); 
+						copyright.classList.remove('hidden'); 
+						//if (copyright) copyright.style.display = 'block';
 					});
 				} 
 			</script>
