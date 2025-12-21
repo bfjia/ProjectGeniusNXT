@@ -3235,11 +3235,12 @@ input, select, textarea {
 			height: 100%;
 			background-color: #212931;
 			background-image: url("../../images/overlay.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)), url("../../images/bg.jpg");
-			background-size: auto,								auto,														100% auto;
-			background-position: center,								center,														top center;
-			background-repeat: repeat,								no-repeat,													no-repeat;
-			background-attachment: scroll,								scroll,														scroll;
-			z-index: -1;
+			background-size: auto,auto, 100% auto;
+			background-position: center,center,top center;
+			background-repeat: repeat,no-repeat,no-repeat;
+			background-attachment: scroll,scroll,scroll;
+			z-index: 0;
+			cursor: pointer;
 		}
 
 			#wrapper > .bg.fixed {
@@ -3310,18 +3311,17 @@ input, select, textarea {
 		cursor: default;
 		text-align: center;
 		z-index: 1;
-		min-height: 100vh;
+		min-height: 85vh;
 	}
 	
 .logo-panel {
-    background: rgba(255, 255, 255, 0.7); /* transparent grey */
+    background: rgba(0, 0, 0, 0.4); /* transparent grey */
     padding: 0.5rem 1rem;
     border-radius: 0.75rem;
     display: inline-block;
-    margin-bottom: 2rem;
     /* optional glass effect */
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
 }
 .logo-panel-grey {
     background: rgba(0, 0, 0, 0.45); /* transparent grey */
@@ -3335,11 +3335,14 @@ input, select, textarea {
 }
 
 .intro-logo {
-    max-width: 320px;
+    max-width: 500px;
     width: 100%;
+	margin-left: auto;
+	margin-right: auto;
     height: auto;
     display: block;
 }
+
 
 		#intro input, #intro select, #intro textarea {
 			color: #ffffff;
@@ -4480,6 +4483,7 @@ input, select, textarea {
 				line-height: 1;
 				margin-left: 1rem;
 				padding-left: 1rem;
+				margin-left: auto;
 			}
 
 				#copyright ul li:first-child {
