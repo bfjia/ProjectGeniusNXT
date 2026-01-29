@@ -4,11 +4,11 @@ compatibility_date = "2024-01-01"
 
 # Custom domain: Worker runs on bfjia.net and www.bfjia.net (zone must be on your Cloudflare account)
 [[routes]]
-pattern = "bfjia.net/"
+pattern = "bfjia.net/*"
 zone_name = "bfjia.net"
 
 [[routes]]
-pattern = "www.bfjia.net/"
+pattern = "www.bfjia.net/*"
 zone_name = "bfjia.net"
 
 # Static site served at / ; /api/reddit handled by worker (run_worker_first so both work)
