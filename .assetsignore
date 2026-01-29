@@ -1,0 +1,20 @@
+# Exclude from Workers static assets (only index + assets/img/images needed for home)
+worker/
+wrangler.toml
+.assetsignore
+.git/
+.gitignore
+orig/
+README.txt
+LICENSE.txt
+elements.html
+generic.html
+presentations.html
+profile.html
+robots.txt
+files/
+presentations/
+projects/
+*.tsv
+*.psd
+.env*

@@ -1,0 +1,16 @@
+name = "projectgeniusnxt"
+main = "worker/index.js"
+compatibility_date = "2024-01-01"
+
+# Custom domain: Worker runs on bfjia.net (zone must be on your Cloudflare account)
+[route]
+pattern = "bfjia.net"
+zone_name = "bfjia.net"
+
+# Static site served at / ; /api/reddit handled by worker (run_worker_first so both work)
+[assets]
+directory = "."
+binding = "ASSETS"
+run_worker_first = true
+
+# Deploy with: npx wrangler deploy
