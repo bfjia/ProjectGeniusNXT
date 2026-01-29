@@ -15,6 +15,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // Redirect www.bfjia.net → bfjia.net (301 permanent)
+    if (url.hostname === 'www.bfjia.net') {
+      const target = `https://bfjia.net${url.pathname}${url.search}`;
+      return Response.redirect(target, 301);
+    }
+
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
