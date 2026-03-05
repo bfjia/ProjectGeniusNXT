@@ -1,4 +1,4 @@
-# Exclude from Workers static assets (only index + assets/img/images needed for home)
+# Exclude from Workers static assets (home + profile + files for project cards)
 worker/
 wrangler.toml
 .assetsignore
@@ -10,11 +10,7 @@ LICENSE.txt
 elements.html
 generic.html
 presentations.html
-profile.html
 robots.txt
-files/
 presentations/
-projects/
-*.tsv
 *.psd
 .env*

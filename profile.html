@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Massively by HTML5 UP</title>
+		<title>BFJIA/PROFILE</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -45,13 +45,14 @@
 							<li class="active"><a href="#about-me">About Me</a></li>
 							<li><a href="#projects">Projects</a></li>
 							<li><a href="#presentations">Presentations</a></li>
-
+							<li><a href="files/Resume_BFJIA.pdf" download="Resume_BFJIA.pdf">Resume</a></li>
 						</ul>
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="mailto:contact@bfjia.net" class="icon solid fa-envelope" title="E-mail"><span class="label">Email</span></a></li>
+							<li><a href="https://www.linkedin.com/in/justinbfjia/" class="icon brands fa-linkedin" title="LinkedIn"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://scholar.google.ca/citations?user=PLiQF5oAAAAJ&hl=en" class="icon solid fa-book-open" title="Google Scholar"><span class="label">Google Scholar</span></a></li>
+							<li><a href="https://github.com/bfjia/" class="icon brands fa-github" title="GitHub"><span class="label">GitHub</span></a></li>
+							<li><a href="https://twitter.com/bfjia" class="icon brands fa-twitter" title="Twitter"><span class="label">Twitter</span></a></li>
 						</ul>
 					</nav>
 
@@ -64,94 +65,54 @@
 									<p>Hello! I am a bioinformatician and computational biologist with over 9 years of dry-lab and wet-lab experience. I specialized in microbial *omics, software development, machine learning based biomarker identification, and environmental surveillance as part of my PhD thesis. My current research utilizes *omics to understand how antimicrobial resistance (AMR) spread in the one-health context by analyzing what makes an AMR gene more likely to spread from one bacteria to another, and to develop software tools to better recover AMR genes from environmental samples. Furthermore, I specialize in microbiome studies and microbial biomarker identification. Big data approaches, and high-performance/cloud-computing are actively used for analysis and development. Previously, I have work experiences with non-profit industry, and government in a range of collaborative and leadership roles.</p>
 								</header>
 								<ul class="actions special">
+									
 									<li><a href="#projects" class="button large">Projects</a></li>
+									<li><a href="files/Resume_BFJIA.pdf" download="Resume_BFJIA.pdf" class="button large">Resume</a></li>
 									<li><a href="#presentations" class="button large">Presentations</a></li>
 
 								</ul>
 							</article>
 							
+							<div id="projects">
 							<article class="post featured">
 								<header class="major">
-
 									<span class="date"><b>Projects</b></span>
 								</header>
 							</article>
 
-						<!-- Posts -->
-							<section class="posts" id = "projects">
-								
-							</section>
-
-						<!-- Footer -->
-							<footer>
-								<div class="pagination">
-									<!--<a href="#" class="previous">Prev</a>-->
-									<a href="#" class="page active">1</a>
-									<a href="#" class="page">2</a>
-									<a href="#" class="page">3</a>
-									<span class="extra">&hellip;</span>
-									<a href="#" class="page">8</a>
-									<a href="#" class="page">9</a>
-									<a href="#" class="page">10</a>
-									<a href="#" class="next">Next</a>
+						<!-- Project cards -->
+							<section class="posts project-cards" id="projects-cards"></section>
+						<!-- Project detail modal -->
+							<div class="project-modal-overlay" id="project-modal-overlay" aria-hidden="true">
+								<div class="project-modal" id="project-modal" role="dialog" aria-modal="true">
+									<button type="button" class="project-modal-close" id="project-modal-close" aria-label="Close">&times;</button>
+									<div class="modal-body" id="project-modal-body"></div>
 								</div>
-							</footer>
+							</div>
+							</div>
 
+							<div id="presentations">
+								<article class="post featured">
+									<header class="major">
+										<span class="date"><b>Presentations</b></span>
+									</header>
+								</article>
+							</div>
 					</div>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<section>
-							<form method="post" action="#">
-								<div class="fields">
-									<div class="field">
-										<label for="name">Name</label>
-										<input type="text" name="name" id="name" />
-									</div>
-									<div class="field">
-										<label for="email">Email</label>
-										<input type="text" name="email" id="email" />
-									</div>
-									<div class="field">
-										<label for="message">Message</label>
-										<textarea name="message" id="message" rows="3"></textarea>
-									</div>
-								</div>
-								<ul class="actions">
-									<li><input type="submit" value="Send Message" /></li>
-								</ul>
-							</form>
-						</section>
-						<section class="split contact">
-							<section class="alt">
-								<h3>Address</h3>
-								<p>1234 Somewhere Road #87257<br />
-								Nashville, TN 00000-0000</p>
-							</section>
-							<section>
-								<h3>Phone</h3>
-								<p><a href="#">(000) 000-0000</a></p>
-							</section>
-							<section>
-								<h3>Email</h3>
-								<p><a href="#">info@untitled.tld</a></p>
-							</section>
-							<section>
-								<h3>Social</h3>
-								<ul class="icons alt">
-									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
-								</ul>
-							</section>
-						</section>
-					</footer>
 
 				<!-- Copyright -->
 					<div id="copyright">
-						<ul><li>&copy; Untitled</li><li>Design: <a href="https://html5up.net">HTML5 UP</a></li></ul>
-					</div>
+						<ul class="icons">
+							<li><a href="mailto:contact@bfjia.net" class="icon solid fa-envelope" title="E-mail"><span class="label">Email</span></a></li>
+							<li><a href="https://www.linkedin.com/in/justinbfjia/" class="icon brands fa-linkedin" title="LinkedIn"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://scholar.google.ca/citations?user=PLiQF5oAAAAJ&hl=en" class="icon solid fa-book-open" title="Google Scholar"><span class="label">Google Scholar</span></a></li>
+							<li><a href="https://github.com/bfjia/" class="icon brands fa-github" title="GitHub"><span class="label">GitHub</span></a></li>
+							<li><a href="https://twitter.com/bfjia" class="icon brands fa-twitter" title="Twitter"><span class="label">Twitter</span></a></li>
+						</ul>
+						<ul>
+							<li>Last Updated Dec 2025. &copy; BFJIA</li>
+						</ul>					</div>
 
 			</div>
 
@@ -172,55 +133,137 @@
 				'url("./img/backgroundImg.jpg")';
 			</script>
 			<script>
-				async function loadProjects() {
-					const response = await fetch('./files/project.tsv');
-					const text = await response.text();
+				// TSV columns: Title, Description (short), Image, Figure Caption, Position, Period, Location, Description (long), Show
+				const COLS = { Title: 0, ShortDesc: 1, Image: 2, FigureCaption: 3, Position: 4, Period: 5, Location: 6, LongDesc: 7, Show: 8 };
 
-					const lines = text.trim().split('\n');
-					const headers = lines[0].split('\t');
-
-					const projects = lines.slice(1).map(line => {
-						const values = line.split('\t');
-						return Object.fromEntries(headers.map((h, i) => [h, values[i]]));
-					});
-					console.log(projects)
-					const container = document.getElementById('projects');
-
-					projects
-						.filter(p => p.ShowOnSite === "True")
-						.forEach(p => {
-							const article = document.createElement('article');
-
-							article.innerHTML = `
-								<header>
-									<span class="date">${p.JobTitle} — ${p.Employer}</span>
-									<h2>${p.ProjectTitle}</h2>
-								</header>
-
-								${p.Figure ? `
-									<a href="${p.Figure}" class="image fit">
-										<img src="${p.Figure}" alt="${p.FigureCaption || ''}">
-									</a>
-								` : ''}
-
-								<p>${p.Description}</p>
-
-								${p.ID ? `
-									<ul class="actions special">
-										<li>
-											<a href="project.html?id=${p.ID}" class="button">
-												View Project
-											</a>
-										</li>
-									</ul>
-								` : ''}
-							`;
-
-							container.appendChild(article);
-						});
+				function parseTsvLine(line) {
+					const v = [];
+					let i = 0;
+					while (i < line.length) {
+						if (line[i] === '"') {
+							let end = i + 1;
+							while (end < line.length) {
+								const next = line.indexOf('"', end);
+								if (next === -1) break;
+								if (line[next + 1] === '"') { end = next + 2; continue; }
+								end = next;
+								break;
+							}
+							v.push(line.slice(i + 1, end).replace(/""/g, '"').trim());
+							i = end + 1;
+							if (i < line.length && line[i] === '\t') i++;
+							continue;
+						}
+						const tab = line.indexOf('\t', i);
+						if (tab === -1) {
+							v.push(line.slice(i).trim());
+							break;
+						}
+						v.push(line.slice(i, tab).trim());
+						i = tab + 1;
+					}
+					return v;
 				}
 
-				loadProjects();
+				async function loadProjects() {
+					const container = document.getElementById('projects-cards');
+					if (!container) return;
+
+					let text;
+					try {
+						const response = await fetch('./files/project.tsv');
+						if (!response.ok) throw new Error(response.statusText);
+						text = await response.text();
+					} catch (e) {
+						container.innerHTML = '<p>Could not load projects.</p>';
+						return;
+					}
+
+					const lines = text.trim().split(/\r?\n/).filter(l => l.length);
+					if (lines.length < 2) return;
+
+					const projects = [];
+					for (let i = 1; i < lines.length; i++) {
+						const v = parseTsvLine(lines[i]);
+						const title = (v[COLS.Title] || '').trim();
+						if (!title) continue;
+						projects.push({
+							title,
+							responsibilities: (v[COLS.ShortDesc] || '').trim(),
+							image: (v[COLS.Image] || '').trim(),
+							figureCaption: (v[COLS.FigureCaption] || '').trim(),
+							position: (v[COLS.Position] || '').trim(),
+							period: (v[COLS.Period] || '').trim(),
+							location: (v[COLS.Location] || '').replace(/^"|"$/g, '').trim(),
+							description: (v[COLS.LongDesc] || '').replace(/^"|"$/g, '').trim()
+						});
+					}
+
+					const overlay = document.getElementById('project-modal-overlay');
+					const modalBody = document.getElementById('project-modal-body');
+					const closeBtn = document.getElementById('project-modal-close');
+
+					function openModal(project) {
+						const imgSrc = project.image ? (project.image.startsWith('http') ? project.image : './' + project.image) : '';
+						const responsibilityItems = project.description
+							? project.description.split(';').map(s => s.trim()).filter(Boolean)
+							: [];
+						modalBody.innerHTML = `
+							<p class="modal-field modal-title">${escapeHtml(project.title)}</p>
+							${project.responsibilities ? `<p class="modal-field modal-responsibilities">${project.responsibilities}</p>` : ''}
+							${project.position ? `<p class="modal-field">${escapeHtml(project.position)}</p>` : ''}
+							${project.period ? `<p class="modal-field">${escapeHtml(project.period)}</p>` : ''}
+							${project.location ? `<p class="modal-field">${escapeHtml(project.location)}</p>` : ''}
+							${imgSrc ? `<div class="modal-field modal-image"><img src="${escapeHtml(imgSrc)}" alt=""></div>` : ''}
+							${project.figureCaption ? `<p class="modal-field modal-caption">${project.figureCaption}</p>` : ''}
+							${responsibilityItems.length ? `
+								<p class="modal-field modal-description-header"><strong>Responsibilities:</strong></p>
+								<ul class="modal-field modal-description">${responsibilityItems.map(item => `<li>${item}</li>`).join('')}</ul>
+							` : ''}
+						`;
+						overlay.classList.add('is-open');
+						overlay.setAttribute('aria-hidden', 'false');
+					}
+
+					function closeModal() {
+						overlay.classList.remove('is-open');
+						overlay.setAttribute('aria-hidden', 'true');
+					}
+
+					function escapeHtml(s) {
+						const div = document.createElement('div');
+						div.textContent = s;
+						return div.innerHTML;
+					}
+
+					overlay.addEventListener('click', function(e) {
+						if (e.target === overlay) closeModal();
+					});
+					closeBtn.addEventListener('click', closeModal);
+					document.addEventListener('keydown', function(e) {
+						if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+					});
+
+					projects.forEach(project => {
+						const card = document.createElement('article');
+						card.className = 'project-card';
+						const imgSrc = project.image ? (project.image.startsWith('http') ? project.image : './' + project.image) : '';
+						card.innerHTML = `
+							<div class="card-image-wrap">
+								${imgSrc ? `<img src="${escapeHtml(imgSrc)}" alt="">` : '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#666;">No image</div>'}
+							</div>
+							<h3 class="card-title">${escapeHtml(project.title)}</h3>
+						`;
+						card.addEventListener('click', () => openModal(project));
+						container.appendChild(card);
+					});
+				}
+
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', loadProjects);
+				} else {
+					loadProjects();
+				}
 			</script>
 
 

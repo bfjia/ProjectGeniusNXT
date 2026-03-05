@@ -61,6 +61,17 @@ npx wrangler deploy
 - **Wrangler** uploads the Worker script and the static assets (respecting `.assetsignore`).
 - The live app is at: `https://projectgeniusnxt.<your-account-subdomain>.workers.dev/`.
 
+### Serve locally
+
+From the project root:
+
+```bash
+npx wrangler dev
+```
+
+- Starts the Worker and serves static assets on **http://localhost:8787** (same behavior as production: `/api/reddit` goes to the worker, everything else to assets).
+- Uses the same `.assetsignore`, so `profile.html`, `files/`, etc. are not served. To test the profile page and `files/project.tsv` locally, temporarily remove `profile.html` and `files/` from `.assetsignore`, or run a separate static server (e.g. `npx serve .`) and open `http://localhost:3000/profile.html` when working on that page.
+
 ### Custom domain (e.g. bfjia.net)
 
 1. In **Cloudflare Dashboard** → your zone (e.g. `bfjia.net`) → **Workers Routes**.
