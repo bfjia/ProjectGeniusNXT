@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Folders in /m/</title>
+	<style>
+		body {
+			font-family: system-ui, -apple-system, sans-serif;
+			max-width: 40rem;
+			margin: 2rem auto;
+			padding: 0 1rem;
+			background: #1e252d;
+			color: #eee;
+		}
+		h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+		ul { list-style: none; padding: 0; margin: 0; }
+		li { margin: 0.5rem 0; }
+		li a {
+			color: #18bfef;
+			text-decoration: none;
+		}
+		li a:hover { text-decoration: underline; }
+		.empty { color: #888; }
+	</style>
+</head>
+<body>
+	<h1>Folders in /m/</h1>
+	<ul id="list"></ul>
+	<script>
+		(function() {
+			const listEl = document.getElementById('list');
+			function escapeHtml(s) {
+				const div = document.createElement('div');
+				div.textContent = s;
+				return div.innerHTML;
+			}
+			fetch('./folders.json')
+				.then(function(res) { return res.ok ? res.json() : Promise.reject(res.status); })
+				.then(function(folders) {
+					const names = Array.isArray(folders) ? folders : (folders.folders || []);
+					if (names.length === 0) {
+						listEl.innerHTML = '<li class="empty">No subfolders. Run: node scripts/generate-m-folders-list.js</li>';
+						return;
+					}
+					names.forEach(function(name) {
+						const li = document.createElement('li');
+						const href = encodeURIComponent(name) + '/index.html';
+						li.innerHTML = '<a href="' + escapeHtml(href) + '">' + escapeHtml(name) + '</a>';
+						listEl.appendChild(li);
+					});
+				})
+				.catch(function() {
+					listEl.innerHTML = '<li class="empty">Could not load folder list. Run: node scripts/generate-m-folders-list.js</li>';
+				});
+		})();
+	</script>
+</body>
+</html>
