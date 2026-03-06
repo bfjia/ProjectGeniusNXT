@@ -30,10 +30,19 @@ export default {
       return handleReddit(request, corsHeaders);
     }
 
-    // Everything else: serve static site (index.html, assets/, img/, images/)
+    // Everything else: serve static site; on 404, serve 404.html if present
     if (env.ASSETS) {
       const res = await env.ASSETS.fetch(request);
       if (res.status !== 404) return res;
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl, { method: 'GET' }));
+      if (notFoundRes.ok) {
+        return new Response(notFoundRes.body, {
+          status: 404,
+          statusText: 'Not Found',
+          headers: notFoundRes.headers,
+        });
+      }
     }
     return new Response('Not Found', { status: 404 });
   },

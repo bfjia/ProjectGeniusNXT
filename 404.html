@@ -1,0 +1,176 @@
+<!DOCTYPE HTML>
+<!--
+	Design Modified From <a href="https://html5up.net">HTML5 UP</a>
+-->
+<html>
+	<head>
+		<title>Best Friend Jia</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="/assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper" class="fade-in">
+				<!-- Intro -->
+					<div id="intro">
+						<div class="logo-panel" id = "logo-box">
+							<img
+								src="/img/404.jpg"
+								alt="404 PAGE NOT FOUND"
+								class="intro-logo"
+							>
+							<p id="intro-text">
+								<br> Hello, <br> what you are looking for is away on vacation. <br> I was going to load a nice view for you, but something went wrong. Try refreshing :)
+							</p>
+							<!--<a href="https://www.bfjia.net/profile" class="button large"> Profile ➜</a>-->
+							<p id = "Hide"> <u>Hide</u> </p>
+						</div>
+						<!--
+						<ul class="actions">
+							<li><a href="https://www.bfjia.net/presentations" class="button large">> Presentations <</a></li>
+						</ul>
+						-->
+					</div>
+			</div>
+
+		<!-- Scripts -->
+			<script src="/assets/js/jquery.min.js"></script>
+			<script src="/assets/js/jquery.scrollex.min.js"></script>
+			<script src="/assets/js/jquery.scrolly.min.js"></script>
+			<script src="/assets/js/browser.min.js"></script>
+			<script src="/assets/js/breakpoints.min.js"></script>
+			<script src="/assets/js/util.js"></script>
+			<script src="/assets/js/main.js"></script>
+			<script>
+			async function setRandomRedditBackgroundWithVerticalDetection() {
+				const response = await fetch("/api/reddit");
+				const json = await response.json();
+
+				const posts = json.data.children.filter(
+					p => p.data.post_hint === 'image'
+				);
+
+				const chosen = posts[Math.floor(Math.random() * posts.length)];
+
+				const imageUrl =
+					chosen.data.preview?.images?.[0]?.source?.url
+						?.replace(/&amp;/g, '&') ||
+					chosen.data.url;
+
+				const dataReturn = {
+					url: imageUrl,
+					permalink: 'https://www.reddit.com' + chosen.data.permalink,
+					author: chosen.data.author,
+					title: chosen.data.title
+				};
+
+				const bg = document.querySelector('#wrapper > .bg');
+				if (!bg) return;
+
+				// Load image to detect orientation
+				const img = new Image();
+				img.src = dataReturn.url;
+
+				img.onload = () => {
+					const isPortrait = img.height > img.width;
+
+					bg.style.backgroundImage =
+						'url("../../images/overlay.png"), ' +
+						'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
+						`url("${dataReturn.url}")`;
+
+					if (isPortrait) {
+						// Portrait: show middle section
+						bg.style.backgroundSize = 'auto, auto, cover';
+						bg.style.backgroundPosition = 'center, center, center';
+					} else {
+						// Landscape: fill screen normally
+						bg.style.backgroundSize = 'auto, auto, cover';
+						bg.style.backgroundPosition = 'center, center, center';
+					}
+				};
+
+				// Update intro text
+				const introText = document.getElementById('intro-text');
+				if (introText) {
+					introText.innerHTML = `
+						Hello, what you are looking for is away on vacation. <br>
+						In its place, enjoy this view captured by
+						<a href="${dataReturn.permalink}" target="_blank" rel="noopener">
+							u/${dataReturn.author}
+						</a>.
+					`;
+				}
+			}
+
+				async function setRandomRedditBackground() {
+					const response = await fetch("/api/reddit");
+					const json = await response.json();
+
+					const posts = json.data.children.filter(p =>
+						p.data.post_hint === 'image'
+					);
+
+					const chosen = posts[Math.floor(Math.random() * posts.length)];
+
+					const dataReturn = {
+						url: chosen.data.preview?.images?.[0]?.source?.url
+							?.replace(/&amp;/g, '&') || chosen.data.url,
+						permalink: 'https://www.reddit.com' + chosen.data.permalink,
+						author: chosen.data.author,
+						title: chosen.data.title
+					};
+
+					// Set background
+					const bg = document.querySelector('#wrapper > .bg');
+					if (bg) {
+						bg.style.backgroundImage =
+							'url("../../images/overlay.png"), ' +
+							'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
+							`url("${dataReturn.url}")`;
+					}
+
+					// 🔹 Update intro text with hyperlink
+					const introText = document.getElementById('intro-text');
+					if (introText) {
+						introText.innerHTML = ` 
+							Hello, what you are looking for is away on vacation. <br>
+							In it's place, enjoy this view captured by <a href="${dataReturn.permalink}" target="_blank" rel="noopener"> u/${dataReturn.author} </a>.
+							`;
+					}
+				}
+
+				setRandomRedditBackgroundWithVerticalDetection();
+			</script>
+			<script>
+				const intro = document.getElementById('intro');
+				const copyright = document.getElementById('copyright');
+				const bg = document.querySelector('#wrapper > .bg');
+
+				document.getElementById('Hide').addEventListener('click', () => {
+					//document.getElementById('intro').style.display = 'none';
+					intro.classList.add('hidden'); 
+					//copyright.classList.add('hidden'); 
+					//document.getElementById('copyright').style.display = 'none';
+				});
+
+				if (bg) {
+					bg.addEventListener('click', () => {
+						//if (intro) intro.style.display = 'block';
+						intro.classList.remove('hidden'); 
+						//copyright.classList.remove('hidden'); 
+						//if (copyright) copyright.style.display = 'block';
+					});
+				} 
+			</script>
+
+
+
+
+
+
+	</body>
+</html>
