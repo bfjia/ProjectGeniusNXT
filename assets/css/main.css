@@ -4062,9 +4062,9 @@ input, select, textarea {
 			background: #fff;
 			border: 1px solid #ddd;
 			border-radius: 8px;
-			width: min(90vw, 120vh, 960px);
-			aspect-ratio: 4 / 3;
-			height: auto;
+			width: min(70vw, 960px);
+			height: min(80vh, 900px);
+			max-width: 96vw;
 			max-height: 90vh;
 			overflow-y: auto;
 			box-shadow: 0 20px 60px rgba(0,0,0,0.2);
