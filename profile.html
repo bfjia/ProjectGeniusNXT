@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 	</head>
-	<body class="is-preload">
+	<body class="is-preload profile-page">
 
 		<!-- Wrapper -->
 			<div id="wrapper" class="fade-in">
@@ -97,6 +97,13 @@
 										<span class="date"><b>Presentations</b></span>
 									</header>
 								</article>
+								<section class="posts presentation-cards" id="presentations-cards"></section>
+								<div class="project-modal-overlay" id="presentation-modal-overlay" aria-hidden="true">
+									<div class="project-modal" id="presentation-modal" role="dialog" aria-modal="true">
+										<button type="button" class="project-modal-close" id="presentation-modal-close" aria-label="Close">&times;</button>
+										<div class="modal-body" id="presentation-modal-body"></div>
+									</div>
+								</div>
 							</div>
 					</div>
 
@@ -125,12 +132,7 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
-			  const bg = document.querySelector('#wrapper > .bg');
-
-			  bg.style.backgroundImage =
-				'url("../../images/overlay.png"), ' +
-				'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
-				'url("./img/backgroundImg.jpg")';
+				// Profile page: no background image (see body.profile-page in main.css)
 			</script>
 			<script>
 				// TSV columns: Title, Description (short), Image, Figure Caption, Position, Period, Location, Description (long), Show
@@ -163,6 +165,12 @@
 						i = tab + 1;
 					}
 					return v;
+				}
+
+				function escapeHtml(s) {
+					const div = document.createElement('div');
+					div.textContent = s;
+					return div.innerHTML;
 				}
 
 				async function loadProjects() {
@@ -230,12 +238,6 @@
 						overlay.setAttribute('aria-hidden', 'true');
 					}
 
-					function escapeHtml(s) {
-						const div = document.createElement('div');
-						div.textContent = s;
-						return div.innerHTML;
-					}
-
 					overlay.addEventListener('click', function(e) {
 						if (e.target === overlay) closeModal();
 					});
@@ -260,9 +262,95 @@
 				}
 
 				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', loadProjects);
+					document.addEventListener('DOMContentLoaded', () => { loadProjects(); loadPresentations(); });
 				} else {
 					loadProjects();
+					loadPresentations();
+				}
+
+				// Presentations: TSV columns Name, Title, Image, Location, Location Link, Filelocation, Show
+				const PRES_COLS = { Name: 0, Title: 1, Image: 2, Location: 3, LocationLink: 4, Filelocation: 5, Show: 6 };
+
+				async function loadPresentations() {
+					const container = document.getElementById('presentations-cards');
+					if (!container) return;
+
+					let text;
+					try {
+						const response = await fetch('./files/presentation.tsv');
+						if (!response.ok) throw new Error(response.statusText);
+						text = await response.text();
+					} catch (e) {
+						container.innerHTML = '<p>Could not load presentations.</p>';
+						return;
+					}
+
+					const lines = text.trim().split(/\r?\n/).filter(l => l.length);
+					if (lines.length < 2) return;
+
+					const presentations = [];
+					for (let i = 1; i < lines.length; i++) {
+						const v = parseTsvLine(lines[i]);
+						const title = (v[PRES_COLS.Title] || '').trim();
+						const name = (v[PRES_COLS.Name] || '').trim();
+						const show = (v[PRES_COLS.Show] || '').toUpperCase() === 'TRUE';
+						if (!title || !show) continue;
+						presentations.push({
+							title,
+							name: name || title,
+							image: (v[PRES_COLS.Image] || '').trim(),
+							location: (v[PRES_COLS.Location] || '').trim(),
+							locationLink: (v[PRES_COLS.LocationLink] || '').trim(),
+							filelocation: (v[PRES_COLS.Filelocation] || '').trim()
+						});
+					}
+
+					const overlay = document.getElementById('presentation-modal-overlay');
+					const modalBody = document.getElementById('presentation-modal-body');
+					const closeBtn = document.getElementById('presentation-modal-close');
+
+					function openPresentationModal(pres) {
+						const imgSrc = pres.image ? (pres.image.startsWith('http') ? pres.image : './' + pres.image) : '';
+						const fileHref = pres.filelocation ? (pres.filelocation.startsWith('http') ? pres.filelocation : './' + pres.filelocation) : '';
+						const locationHref = (pres.locationLink || '').trim();
+						const locationUrl = !locationHref ? '' : locationHref.startsWith('#') ? locationHref : (locationHref.startsWith('http') ? locationHref : './' + locationHref);
+						const isExternalLink = locationHref.startsWith('http://') || locationHref.startsWith('https://');
+						modalBody.innerHTML = `
+							<p class="modal-field modal-title">${escapeHtml(pres.title)}</p>
+							${pres.location ? `<p class="modal-field">${locationHref ? `<a href="${escapeHtml(locationUrl)}" ${isExternalLink ? 'target="_blank" rel="noopener"' : ''}>${escapeHtml(pres.location)}</a>` : escapeHtml(pres.location)}</p>` : ''}
+							${imgSrc ? `<div class="modal-field modal-image"><img src="${escapeHtml(imgSrc)}" alt=""></div>` : ''}
+							${fileHref ? `<p class="modal-field"><a href="${escapeHtml(fileHref)}" download class="button">Download</a></p>` : ''}
+						`;
+						overlay.classList.add('is-open');
+						overlay.setAttribute('aria-hidden', 'false');
+					}
+
+					function closePresentationModal() {
+						overlay.classList.remove('is-open');
+						overlay.setAttribute('aria-hidden', 'true');
+					}
+
+					overlay.addEventListener('click', function(e) {
+						if (e.target === overlay) closePresentationModal();
+					});
+					closeBtn.addEventListener('click', closePresentationModal);
+					document.addEventListener('keydown', function(e) {
+						if (e.key === 'Escape' && overlay.classList.contains('is-open')) closePresentationModal();
+					});
+
+					presentations.forEach(pres => {
+						const card = document.createElement('article');
+						card.className = 'presentation-card';
+						const imgSrc = pres.image ? (pres.image.startsWith('http') ? pres.image : './' + pres.image) : '';
+						card.innerHTML = `
+							<div class="card-image-wrap">
+								${imgSrc ? `<img src="${escapeHtml(imgSrc)}" alt="">` : '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#666;">No image</div>'}
+							</div>
+							<h3 class="card-title">${escapeHtml(pres.name)}</h3>
+						`;
+						card.addEventListener('click', () => openPresentationModal(pres));
+						container.appendChild(card);
+					});
 				}
 			</script>
 

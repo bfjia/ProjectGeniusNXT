@@ -11,6 +11,5 @@ elements.html
 generic.html
 presentations.html
 robots.txt
-presentations/
 *.psd
 .env*
