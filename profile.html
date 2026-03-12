@@ -62,14 +62,14 @@
 							<article class="post featured">
 								<header class="major">
 									<span class="date"><b>About me</b></span>
-									<p>Hello! I am a bioinformatician and computational biologist with over 9 years of dry-lab and wet-lab experience. I specialized in microbial *omics, software development, machine learning based biomarker identification, and environmental surveillance as part of my PhD thesis. My current research utilizes *omics to understand how antimicrobial resistance (AMR) spread in the one-health context by analyzing what makes an AMR gene more likely to spread from one bacteria to another, and to develop software tools to better recover AMR genes from environmental samples. Furthermore, I specialize in microbiome studies and microbial biomarker identification. Big data approaches, and high-performance/cloud-computing are actively used for analysis and development. Previously, I have work experiences with non-profit industry, and government in a range of collaborative and leadership roles.</p>
+									<div id="about-me-text"></div>
 								</header>
 								<ul class="actions special">
-									
 									<li><a href="#projects" class="button large">Projects</a></li>
-									<li><a href="files/Resume_BFJIA.pdf" download="Resume_BFJIA.pdf" class="button large">résumé</a></li>
 									<li><a href="#presentations" class="button large">Presentations</a></li>
-
+								</ul>
+								<ul class="actions special profile-actions-secondary">
+									<li><a href="files/Resume_BFJIA.pdf" download="Resume_BFJIA.pdf" class="button large">résumé</a></li>
 								</ul>
 							</article>
 							
@@ -261,9 +261,36 @@
 					});
 				}
 
+				async function loadAbout() {
+					const container = document.getElementById('about-me-text');
+					if (!container) return;
+
+					let text;
+					try {
+						const response = await fetch('./files/about.txt');
+						if (!response.ok) throw new Error(response.statusText);
+						text = await response.text();
+					} catch (e) {
+						container.innerHTML = '<p>Could not load about information.</p>';
+						return;
+					}
+
+					// Split paragraphs on blank lines
+					const paragraphs = text
+						.replace(/\r\n/g, '\n')
+						.split(/\n\s*\n/)
+						.map(p => p.trim())
+						.filter(Boolean);
+
+					container.innerHTML = paragraphs
+						.map(p => `<p>${escapeHtml(p)}</p>`)
+						.join('');
+				}
+
 				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', () => { loadProjects(); loadPresentations(); });
+					document.addEventListener('DOMContentLoaded', () => { loadAbout(); loadProjects(); loadPresentations(); });
 				} else {
+					loadAbout();
 					loadProjects();
 					loadPresentations();
 				}
