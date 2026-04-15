@@ -1,8 +1,21 @@
 /**
  * Cloudflare Worker: serves static site (ASSETS) and proxies Reddit API at /api/reddit.
+ *
+ * Reddit often returns 403 on www.reddit.com .json from server/datacenter IPs.
+ * Try old.reddit.com first (usually works), then www as fallback — see r/redditdev.
  */
 
-const REDDIT_URL = 'https://www.reddit.com/r/EarthPorn/top/.json?sort=top&t=week';
+const REDDIT_JSON_URLS = [
+  'https://old.reddit.com/r/EarthPorn/top/.json?sort=top&t=week',
+  'https://www.reddit.com/r/EarthPorn/top/.json?sort=top&t=week',
+];
+
+/** https://github.com/reddit-archive/reddit/wiki/API — unique, descriptive UA */
+const REDDIT_HEADERS = {
+  'User-Agent': 'web:bfjia.net:homepage:v1 (by /u/bfjia)',
+  Accept: 'application/json',
+  'Accept-Language': 'en-US,en;q=0.9',
+};
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -49,29 +62,55 @@ export default {
 };
 
 async function handleReddit(request, corsHeaders) {
+  let lastStatus = 0;
+  let lastUrl = '';
 
   try {
-    const res = await fetch(REDDIT_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0',
-        'Accept': 'application/json',
-      },
-    });
+    for (const redditUrl of REDDIT_JSON_URLS) {
+      lastUrl = redditUrl;
+      const res = await fetch(redditUrl, {
+        headers: REDDIT_HEADERS,
+        redirect: 'follow',
+      });
 
-    if (!res.ok) {
-      return new Response(
-        JSON.stringify({ error: 'Reddit API error', status: res.status }),
-        { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
+      lastStatus = res.status;
+
+      if (!res.ok) {
+        continue;
+      }
+
+      const text = await res.text();
+      let json;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        continue;
+      }
+
+      if (json?.data?.children && Array.isArray(json.data.children)) {
+        return new Response(JSON.stringify(json), {
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
     }
 
-    const json = await res.json();
-    return new Response(JSON.stringify(json), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    return new Response(
+      JSON.stringify({
+        error: 'Reddit API error',
+        status: lastStatus,
+        tried: REDDIT_JSON_URLS,
+        hint: 'Reddit may block JSON from some IPs; old.reddit.com is tried first.',
+      }),
+      { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
   } catch (err) {
     return new Response(
-      JSON.stringify({ error: 'Proxy error', message: String(err.message) }),
+      JSON.stringify({
+        error: 'Proxy error',
+        message: String(err.message),
+        lastUrl,
+        lastStatus,
+      }),
       { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }

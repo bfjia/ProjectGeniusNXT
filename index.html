@@ -23,7 +23,7 @@
 								class="intro-logo"
 							>
 							<p id="intro-text">
-								<br> Hello <br> The home page is currently on vacation. <br> I was going to load a nice view for you, but something went wrong. Try refreshing :)
+								<br> Hello, the home page is currently on vacation.
 							</p>
 							<!--<a href="https://www.bfjia.net/profile" class="button large"> Profile ➜</a>-->
 							<p id = "Hide"> <u>Hide</u> </p>
@@ -61,13 +61,69 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script>
+			const FALLBACK_BACKGROUND_IMAGE = 'https://i.redd.it/muujjjfse8vg1.jpeg';
+
+			/** Shown while /api/reddit and optional image loads; append only after success or failure. */
+			const INTRO_BASE =
+				'<br> Hello, the home page is currently on vacation.';
+			const INTRO_APPEND_FALLBACK =
+				'<br> In its place, enjoy this photo of North Vancouver, BC.';
+
+			function applyNorthVancouverFallbackBackground() {
+				const bg = document.querySelector('#wrapper > .bg');
+				const introText = document.getElementById('intro-text');
+				if (introText) {
+					introText.innerHTML = INTRO_BASE + INTRO_APPEND_FALLBACK;
+				}
+
+				const applyBg = () => {
+					if (!bg) return;
+					bg.style.backgroundImage =
+						'url("../../images/overlay.png"), ' +
+						'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
+						`url("${FALLBACK_BACKGROUND_IMAGE}")`;
+					bg.style.backgroundSize = 'auto, auto, cover';
+					bg.style.backgroundPosition = 'center, center, center';
+				};
+
+				const img = new Image();
+				img.onload = () => {
+					if (!bg) return;
+					bg.style.backgroundImage =
+						'url("../../images/overlay.png"), ' +
+						'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
+						`url("${FALLBACK_BACKGROUND_IMAGE}")`;
+					bg.style.backgroundSize = 'auto, auto, cover';
+					bg.style.backgroundPosition = 'center, center, center';
+				};
+				img.onerror = () => {
+					applyBg();
+				};
+				img.src = FALLBACK_BACKGROUND_IMAGE;
+			}
+
 			async function setRandomRedditBackgroundWithVerticalDetection() {
-				const response = await fetch("/api/reddit");
-				const json = await response.json();
+				let json;
+				try {
+					const response = await fetch("/api/reddit");
+					json = await response.json();
+					if (!response.ok || !json?.data?.children?.length) {
+						applyNorthVancouverFallbackBackground();
+						return;
+					}
+				} catch {
+					applyNorthVancouverFallbackBackground();
+					return;
+				}
 
 				const posts = json.data.children.filter(
 					p => p.data.post_hint === 'image'
 				);
+
+				if (!posts.length) {
+					applyNorthVancouverFallbackBackground();
+					return;
+				}
 
 				const chosen = posts[Math.floor(Math.random() * posts.length)];
 
@@ -84,12 +140,13 @@
 				};
 
 				const bg = document.querySelector('#wrapper > .bg');
-				if (!bg) return;
+				if (!bg) {
+					applyNorthVancouverFallbackBackground();
+					return;
+				}
 
 				// Load image to detect orientation
 				const img = new Image();
-				img.src = dataReturn.url;
-
 				img.onload = () => {
 					const isPortrait = img.height > img.width;
 
@@ -99,36 +156,49 @@
 						`url("${dataReturn.url}")`;
 
 					if (isPortrait) {
-						// Portrait: show middle section
 						bg.style.backgroundSize = 'auto, auto, cover';
 						bg.style.backgroundPosition = 'center, center, center';
 					} else {
-						// Landscape: fill screen normally
 						bg.style.backgroundSize = 'auto, auto, cover';
 						bg.style.backgroundPosition = 'center, center, center';
 					}
-				};
 
-				// Update intro text
-				const introText = document.getElementById('intro-text');
-				if (introText) {
-					introText.innerHTML = `
-						Hello, the home page is currently on vacation. <br>
-						In its place, enjoy this view captured by
-						<a href="${dataReturn.permalink}" target="_blank" rel="noopener">
-							u/${dataReturn.author}
-						</a>.
-					`;
-				}
+					const introText = document.getElementById('intro-text');
+					if (introText) {
+						introText.innerHTML =
+							INTRO_BASE +
+							'<br> In its place, enjoy this view captured by ' +
+							`<a href="${dataReturn.permalink}" target="_blank" rel="noopener">u/${dataReturn.author}</a>.`;
+					}
+				};
+				img.onerror = () => {
+					applyNorthVancouverFallbackBackground();
+				};
+				img.src = dataReturn.url;
 			}
 
 				async function setRandomRedditBackground() {
-					const response = await fetch("/api/reddit");
-					const json = await response.json();
+					let json;
+					try {
+						const response = await fetch("/api/reddit");
+						json = await response.json();
+						if (!response.ok || !json?.data?.children?.length) {
+							applyNorthVancouverFallbackBackground();
+							return;
+						}
+					} catch {
+						applyNorthVancouverFallbackBackground();
+						return;
+					}
 
 					const posts = json.data.children.filter(p =>
 						p.data.post_hint === 'image'
 					);
+
+					if (!posts.length) {
+						applyNorthVancouverFallbackBackground();
+						return;
+					}
 
 					const chosen = posts[Math.floor(Math.random() * posts.length)];
 
@@ -140,23 +210,30 @@
 						title: chosen.data.title
 					};
 
-					// Set background
 					const bg = document.querySelector('#wrapper > .bg');
-					if (bg) {
+					if (!bg) {
+						applyNorthVancouverFallbackBackground();
+						return;
+					}
+
+					const img = new Image();
+					img.onload = () => {
 						bg.style.backgroundImage =
 							'url("../../images/overlay.png"), ' +
 							'linear-gradient(0deg, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), ' +
 							`url("${dataReturn.url}")`;
-					}
-
-					// 🔹 Update intro text with hyperlink
-					const introText = document.getElementById('intro-text');
-					if (introText) {
-						introText.innerHTML = ` 
-							Hello, the home page is currently on vacation. <br>
-							In it's place, enjoy this view captured by <a href="${dataReturn.permalink}" target="_blank" rel="noopener"> u/${dataReturn.author} </a>.
-							`;
-					}
+						const introText = document.getElementById('intro-text');
+						if (introText) {
+							introText.innerHTML =
+								INTRO_BASE +
+								'<br> In its place, enjoy this view captured by ' +
+								`<a href="${dataReturn.permalink}" target="_blank" rel="noopener">u/${dataReturn.author}</a>.`;
+						}
+					};
+					img.onerror = () => {
+						applyNorthVancouverFallbackBackground();
+					};
+					img.src = dataReturn.url;
 				}
 
 				setRandomRedditBackgroundWithVerticalDetection();
