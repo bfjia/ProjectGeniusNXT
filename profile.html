@@ -287,12 +287,33 @@
 						.join('');
 				}
 
+				function scrollToProfileHash() {
+					const id = (window.location.hash || '').slice(1);
+					if (!id) return;
+					const el = document.getElementById(id);
+					if (!el) return;
+					el.scrollIntoView({ behavior: 'auto', block: 'start' });
+				}
+
+				// Hash scroll runs after async sections load and again after preload/layout settles.
+				function scheduleHashScrollRetries() {
+					if (!window.location.hash) return;
+					[150, 500, 1200].forEach(ms => setTimeout(scrollToProfileHash, ms));
+				}
+
+				async function initProfilePage() {
+					await Promise.all([loadAbout(), loadProjects(), loadPresentations()]);
+					scrollToProfileHash();
+					scheduleHashScrollRetries();
+				}
+
+				window.addEventListener('hashchange', scrollToProfileHash);
+				window.addEventListener('load', () => setTimeout(scrollToProfileHash, 150));
+
 				if (document.readyState === 'loading') {
-					document.addEventListener('DOMContentLoaded', () => { loadAbout(); loadProjects(); loadPresentations(); });
+					document.addEventListener('DOMContentLoaded', initProfilePage);
 				} else {
-					loadAbout();
-					loadProjects();
-					loadPresentations();
+					initProfilePage();
 				}
 
 				// Presentations: TSV columns Name, Title, Image, Location, Location Link, Filelocation, Show

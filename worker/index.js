@@ -34,6 +34,11 @@ export default {
       return Response.redirect(target, 301);
     }
 
+    // /presentations → profile presentations section
+    if (url.pathname === '/presentations' || url.pathname === '/presentations/') {
+      return Response.redirect('https://bfjia.net/profile#presentations', 301);
+    }
+
     if (request.method === 'OPTIONS') {
       return new Response(null, { headers: corsHeaders });
     }
