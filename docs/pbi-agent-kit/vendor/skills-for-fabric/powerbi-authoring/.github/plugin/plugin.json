@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "name": "powerbi-authoring",
+  "description": "Developer skills for authoring Microsoft Power BI solutions.",
+  "version": "0.3.23",
+  "license": "MIT",
+  "repository": "https://github.com/microsoft/skills-for-fabric",
+  "keywords": [
+    "fabric",
+    "microsoft-fabric",
+    "authoring",
+    "powerbi",
+    "semantic-model",
+    "pbip",
+    "pbir",
+    "report",
+    "developer"
+  ],
+  "skills": [
+    "./skills/semantic-model-authoring",
+    "./skills/powerbi-report-cli"
+  ],
+  "agents": [],
+  "mcpServers": {
+    "powerbi-modeling-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/powerbi-modeling-mcp@latest",
+        "--start"
+      ],
+      "tools": [
+        "*"
+      ]
+    }
+  }
+}

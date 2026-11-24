@@ -1,0 +1,17 @@
+{
+  "name": "@microsoft/powerbi-modeling-mcp",
+  "version": "1.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@microsoft/powerbi-modeling-mcp-linux-x64": "1.0.1",
+    "@microsoft/powerbi-modeling-mcp-win32-x64": "1.0.1",
+    "@microsoft/powerbi-modeling-mcp-linux-arm64": "1.0.1",
+    "@microsoft/powerbi-modeling-mcp-win32-arm64": "1.0.1"
+  },
+  "bin": {
+    "powerbi-modeling-mcp": "index.js"
+  }
+}

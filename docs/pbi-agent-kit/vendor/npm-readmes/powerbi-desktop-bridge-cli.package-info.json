@@ -1,0 +1,15 @@
+{
+  "name": "@microsoft/powerbi-desktop-bridge-cli",
+  "version": "1.1.0",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "commander": "^13.0.0",
+    "vscode-jsonrpc": "8.2.1"
+  },
+  "bin": {
+    "powerbi-desktop": "dist/cli.js"
+  }
+}

@@ -1,0 +1,87 @@
+<!-- Source: https://learn.microsoft.com/en-us/powerquery-m/quick-tour-of-the-power-query-m-formula-language (retrieved 2026-11-23, converted from HTML; © Microsoft, see learn.microsoft.com terms) -->
+
+# Quick tour of the Power Query M formula language
+
+This quick tour describes creating Power Query M formula language queries.
+
+Note
+
+M is a case-sensitive language.
+
+## Create a query with the Power Query editor
+
+To create an advanced query, you use the [Power Query advanced editor](/en-us/power-query/power-query-ui#the-advanced-editor). A mashup query is composed of variables, expressions, and values encapsulated by a `let` expression. A variable can contain spaces by using the \# identifier with the name in quotes as in `#"Variable name"`.
+
+A `let` expression follows this structure:
+
+``` lang-powerquery-m
+let
+   Variablename = expression,
+   #"Variable name" = expression2
+in
+   Variablename
+```
+
+To create an M query in the advanced editor, you follow this basic process:
+
+1.  Create a series of query formula steps that start with the `let` statement. Each step is defined by a step variable name. An M *variable* can include spaces by using the \# character, such as `#"Step Name"`. A formula step can be a custom formula. Also note that the Power Query formula language is case sensitive.
+
+2.  Each query formula step builds upon a previous step by referring to a step by its variable name.
+
+3.  Output a query formula step using the `in` statement. Generally, the last query step is used as the `in` final data set result.
+
+To learn more about expressions and values, go to [Expressions, values, and let expression](expressions-values-and-let-expression).
+
+## Simple Power Query M formula steps
+
+Let's assume you created the following transform in the Power Query editor. This query converts product names to the appropriate case, in this instance, to all initial capitalization.
+
+![Screenshot of the Power Query editor showing the results of converting the Item column entries to initial capitalization.](media/mstep1.png)
+
+To begin with, you have a table that looks like this:
+
+| OrderID | CustomerID | Item        | Price |
+|---------|------------|-------------|-------|
+| 1       | 1          | fishing rod | 100   |
+| 2       | 1          | 1 lb. worms | 5     |
+| 3       | 2          | fishing net | 25    |
+
+And, you want to capitalize the first letter in each word in the Item column to produce the following table:
+
+| OrderID | CustomerID | Item        | Price |
+|---------|------------|-------------|-------|
+| 1       | 1          | Fishing Rod | 100   |
+| 2       | 1          | 1 Lb. Worms | 5     |
+| 3       | 2          | Fishing Net | 25    |
+
+The M formula steps to project the original table into the results table look like this in the Power Query advanced editor:
+
+![Screenshot of the Power Query advanced editor with all of the M formula steps to produce the table and capitalize initial letters.](media/madvancededitor.png)
+
+Here's the code you can paste into the Power Query advanced editor:
+
+``` lang-powerquery-m
+let Orders = Table.FromRecords({
+    [OrderID = 1, CustomerID = 1, Item = "fishing rod", Price = 100.0],
+    [OrderID = 2, CustomerID = 1, Item = "1 lb. worms", Price = 5.0],
+    [OrderID = 3, CustomerID = 2, Item = "fishing net", Price = 25.0]}),
+    #"Capitalized Each Word" = Table.TransformColumns(Orders, {"Item", Text.Proper})
+in
+    #"Capitalized Each Word"
+```
+
+Let's review each formula step.
+
+1.  **Orders**: Create a table with data for Orders.
+
+2.  **\#"Capitalized Each Word"**: To capitalize each word, you use [`Table.TransformColumns`](table-transformcolumns).
+
+3.  **in \#"Capitalized Each Word"**: Output the table with the first letter of each word capitalized.
+
+## Related content
+
+-   [Expressions, values, and let expression](expressions-values-and-let-expression)
+-   [Operators](operators)
+-   [Type conversion](type-conversion)
+
+------------------------------------------------------------------------

@@ -1,0 +1,51 @@
+<!-- Source: https://learn.microsoft.com/en-us/powerquery-m/excel-workbook (retrieved 2026-11-23, converted from HTML; © Microsoft, see learn.microsoft.com terms) -->
+
+# Excel.Workbook
+
+## Syntax
+
+    Excel.Workbook(
+        workbook as binary,
+        optional useHeaders as any,
+        optional delayTypes as nullable logical
+    ) as table
+
+## About
+
+Returns the contents of the Excel workbook.
+
+-   `useHeaders` can be null, a logical (true/false) value indicating whether the first row of each returned table should be treated as a header, or an options record. Default: false.
+-   `delayTypes` can be null or a logical (true/false) value indicating whether the columns of each returned table should be left untyped. Default: false.
+
+If a record is specified for `useHeaders` (and `delayTypes` is null), the following record fields may be provided:
+
+-   `UseHeaders`: Can be null or a logical (true/false) value indicating whether the first row of each returned table should be treated as a header. Default: false.
+-   `DelayTypes`: Can be null or a logical (true/false) value indicating whether the columns of each returned table should be left untyped. Default: false.
+-   `InferSheetDimensions`: Can be null or a logical (true/false) value indicating whether the area of a worksheet that contains data should be inferred by reading the worksheet itself, rather than by reading the dimensions metadata from the file. This can be useful in cases where the dimensions metadata is incorrect. Note that this option is only supported for Open XML Excel files, not for legacy Excel files. Default: false.
+
+Note
+
+The `useHeaders` parameter or the `UseHeaders` record field converts numbers and dates to text using the current culture, and thus behaves differently when run in environments with different operating system cultures set. We recommend using [`Table.PromoteHeaders`](table-promoteheaders) instead. For example, instead of using `Excel.Workbook(File.Contents("C:\myfile.xlsx", true, true))` or `Excel.Workbook(File.Contents("C:\myfile.xlsx", [UseHeaders = true], null))`, use `Table.PromoteHeaders(Excel.Workbook(File.Contents("C:\myfile.xlsx", null, true), [PromoteAllScalars = true]))` instead.
+
+## Example
+
+Return the contents of Sheet1 from an Excel workbook.
+
+**Usage**
+
+``` lang-powerquery-m
+Excel.Workbook(File.Contents("C:\Book1.xlsx"), null, true){[Item="Sheet1"]}[Data]
+```
+
+**Output**
+
+``` lang-powerquery-m
+Table.FromRecords({
+    [Column1 = "ID", Column2 = "Name", Column3 = "Phone"],
+    [Column1 = 1, Column2 = "Bob", Column3 = "123-4567"],
+    [Column1 = 3, Column2 = "Pam", Column3 = "543-7890"],
+    [Column1 = 2, Column2 = "Jim", Column3 = "987-6543"]
+})
+```
+
+------------------------------------------------------------------------
