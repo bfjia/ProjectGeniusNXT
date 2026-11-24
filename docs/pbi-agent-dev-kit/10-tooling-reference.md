@@ -25,7 +25,7 @@ The full sources are vendored:
 | `scaffold <dir> --name <N> [--model-path ../<M>.SemanticModel] [--page-name "Page 1"] [--force] [--offline]` | A complete PBIP report shell. **Always pass `--offline`**: without it, it fetches schema versions from GitHub. Used only as the fallback when there's no blank PBIP. |
 | `preview <folder> --host desktop --status \| --reload \| --reload-with-model \| --screenshot …` | Desktop preview through the bridge. The kit calls `powerbi-desktop` directly instead (§2). |
 | `preview-pages \| preview-visuals \| preview-filters \| preview-themes <path>` | Read-only enumeration, useful for QA summaries. |
-| `pack <.Report> [--raw] [--mode create\|update] [--display-name N]` | Serializes a `.Report` into a Fabric definition payload (for the optional REST publish adapter, §5.3). |
+| `pack <.Report> [--raw] [--mode create\|update] [--display-name N]` | Serializes a `.Report` into a Fabric definition payload. **Not used** (Fabric REST publishing is out of scope). |
 | `doctor` | Environment self-check (Node, ajv, metadata provider, schema reachability). Schema reachability will fail without GitHub; treat that as a warning. |
 
 ## 2. `powerbi-desktop` (npm `@microsoft/powerbi-desktop-bridge-cli`, MIT)
@@ -65,7 +65,7 @@ Notes:
 - **EULA:** the server blocks every tool until the EULA is accepted. In an interactive session, call `accept_eula` after the user explicitly agrees; the acceptance is stored at `%LOCALAPPDATA%\Microsoft\powerbi-authoring-mcp\config.json`.
 - **Tools:** `connection_operations`, `database_operations` (incl. import/export of TMDL folders), `transaction_operations`, `model_operations`, `table_operations`, `column_operations`, `measure_operations`, `relationship_operations`, **`dax_query_operations`** (execute/validate DAX), `trace_operations`, `partition_operations`, `user_hierarchy_operations`, `calculation_group_operations`, `security_role_operations`, `perspective_operations`, `named_expression_operations`, `function_operations`, `culture_operations`, `object_translation_operations`, `calendar_operations`, `query_group_operations`.
   - The parameter schemas aren't documented. **Read them from the server's tool list at runtime**; the QA skill tells the agent to inspect the tool schema before calling.
-- **MCP prompts:** `ConnectToPowerBIDesktop` (finds the Desktop AS instance by file name), `ConnectToPBIP` (loads TMDL), `ConnectToFabric`, `CreateDAXQuery`, `RunDAXQueryWithMetrics`, `AnalyzeDAXQuery`.
+- **MCP prompts (the kit uses only the local Desktop/PBIP ones; never `ConnectToFabric`):** `ConnectToPowerBIDesktop` (finds the Desktop AS instance by file name), `ConnectToPBIP` (loads TMDL), `ConnectToFabric`, `CreateDAXQuery`, `RunDAXQueryWithMetrics`, `AnalyzeDAXQuery`.
 - **Natural-language connection phrases:**
   - `Connect to '<File Name>' in Power BI Desktop`
   - `Open semantic model from PBIP folder '<path to …SemanticModel\definition>'`
@@ -120,7 +120,7 @@ Notes:
 - **SharePoint Online / OneDrive for Business (`SharePoint.Files`):** a cloud source, so **no gateway**. Set credentials in Settings → Data source credentials (OAuth2, organizational account). Each user has one set of credentials per data source, and each model has one owner (take it over to change credentials).
 - **OneDrive caveat:** replacing a file by *copying over* it can break OneDrive refresh, so replace it with the same name through upload or save.
 
-### 5.3 Optional automated publish (Fabric REST; **unverified on Pro**, off by default)
+### 5.3 Fabric REST publishing: **OUT OF SCOPE (Fabric isn't approved). Don't implement.** Kept as background only.
 
 **Endpoints**
 - Create semantic model: `POST https://api.fabric.microsoft.com/v1/workspaces/{workspaceId}/semanticModels`, body `{"displayName", "description", "definition": {"parts": [{"path": "definition.pbism", "payload": "<base64>", "payloadType": "InlineBase64"}, {"path": "definition/database.tmdl", …}, {"path": "definition/model.tmdl", …}, {"path": "definition/tables/Sales.tmdl", …}, …, {"path": ".platform", …}]}}`. Scopes `SemanticModel.ReadWrite.All` or `Item.ReadWrite.All`; workspace Contributor role. Returns 201, or 202 (LRO).
@@ -135,6 +135,6 @@ Notes:
 **Caveats:**
 - The deploy isn't idempotent: retrying can create duplicates. Look the item up by name first, then update.
 - RLS members and incremental-refresh partitions can't be set through the API.
-- **Whether these endpoints work in Pro/PPU workspaces isn't stated in the docs.** The kit keeps this adapter disabled unless `project.yaml publish.automated: true`, and only after a successful manual test against a throwaway workspace.
+- **Not used by the kit.** Fabric isn't approved in the owner's organization, and whether these endpoints work in Pro/PPU workspaces isn't documented anyway. Publishing is done from Power BI Desktop.
 
 **The Power BI REST "Post Import"** endpoint (`/v1.0/myorg/groups/{id}/imports`) accepts .pbix, .json, .xlsx and .rdl, **not PBIP**. It isn't used.

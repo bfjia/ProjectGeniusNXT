@@ -30,7 +30,7 @@ This folder is the complete implementation package for the Copilot-driven Power 
 |---|---|---|---|
 | `json-schemas/fabric/...` | github.com/microsoft/json-schemas (commit in `SOURCE_COMMIT.txt`) | MIT (see `LICENSE`) | Offline JSON-schema validation of PBIR/PBIP files. Copy to `reference/json-schemas/` in the kit. |
 | `report-theme-schema/reportThemeSchema-2.159.json` | github.com/microsoft/powerbi-desktop-samples | MIT | Validating the custom theme JSON. |
-| `skills-for-fabric/powerbi-authoring/` | github.com/microsoft/skills-for-fabric (plugin `powerbi-authoring`) | MIT (`skills-for-fabric/LICENSE`) | Deep reference for PBIR visual JSON (`skills/powerbi-report-cli/references/authoring/*.md`), design guidance (`.../references/design/*.md`), and TMDL/modeling rules (`skills/semantic-model-authoring/references/*.md`). |
+| `skills-for-fabric/powerbi-authoring/` | github.com/microsoft/skills-for-fabric (plugin `powerbi-authoring`) **as read-only docs; the plugin isn't installed, and its manifests are disabled. Only the files listed in `skills-for-fabric/APPLICABILITY.md` apply (no Fabric).** | MIT (`skills-for-fabric/LICENSE`) | Deep reference for PBIR visual JSON (`skills/powerbi-report-cli/references/authoring/*.md`), design guidance (`.../references/design/*.md`), and TMDL/modeling rules (`skills/semantic-model-authoring/references/*.md`). |
 | `powerbi-modeling-mcp/` | github.com/microsoft/powerbi-modeling-mcp README + TROUBLESHOOTING | MIT | MCP server setup, flags, tools. |
 | `npm-readmes/` | npm registry READMEs + package metadata for `@microsoft/powerbi-report-authoring-cli` 0.5.0, `@microsoft/powerbi-desktop-bridge-cli` 1.1.0, `@microsoft/powerbi-modeling-mcp` 1.0.1 | MIT | CLI command references. |
 | `vscode-docs/docs/...` | github.com/microsoft/vscode-docs (Copilot customization pages) | CC-BY-4.0 / MIT (`LICENSE.md`) | Exact `.agent.md`, `SKILL.md`, instructions and MCP formats for VS Code. |
@@ -44,7 +44,7 @@ This folder is the complete implementation package for the Copilot-driven Power 
 - `agentic/`: Power BI agentic overview, semantic-model skill, report skill, Desktop Bridge, MCP servers overview, Authoring MCP
 - `modeling/`: star schema, date tables (two pages), relationships, DIVIDE, variables, data reduction, measures, connect to Excel, OneDrive for Business links
 - `report/`: themes, accessibility, visualization types, dashboard design tips, conditional formatting (tables, titles), KPI visual
-- `publish/`: refresh (data, scheduled, Excel on OneDrive, personal gateway), Desktop publish, Fabric REST item definitions, create/update semantic model and report, LRO, quickstart, licenses
+- `publish/`: refresh (data, scheduled, Excel on OneDrive, personal gateway), Desktop publish, licenses (Pro/PPU on shared capacity). The Fabric REST pages (item definitions, create/update semantic model and report, LRO, quickstart) are **background only**: Fabric REST publishing is out of scope.
 - `powerquery-m/` (52 pages): function reference pages:
   - sources: Excel.Workbook, Excel.CurrentWorkbook, Csv.Document, File.Contents, Folder.Files, SharePoint.Files/Contents, Web.Contents
   - every Table.* function the transform vocabulary emits (Skip, PromoteHeaders, SelectColumns, RemoveColumns, RenameColumns, TransformColumns, SelectRows, ReplaceValue, FillDown, UnpivotOtherColumns, TransformColumnTypes, Distinct, AddColumn, Combine, Range, FirstN, …)
@@ -59,6 +59,14 @@ This folder is the complete implementation package for the Copilot-driven Power 
   - dates: DATE, YEAR, MONTH, QUARTER, WEEKDAY, TODAY
   - tables: CALENDAR, ADDCOLUMNS, ROW, UNION, DISTINCT (column and table), VALUES, RANKX, TOPN, SUMMARIZECOLUMNS
   - language: VAR, EVALUATE and DAX queries, the DAX syntax reference, the operator reference
+
+## About "Fabric" in this bundle
+The owner's organization hasn't approved Microsoft Fabric, and **the kit doesn't use it**: no Fabric capacity, Fabric items, Fabric REST APIs, Fabric CLI, Direct Lake or XMLA. The word appears only because:
+1. Microsoft publishes the PBIP/PBIR **file-format schemas** under `json-schemas/fabric/`. They're offline files.
+2. Microsoft's Power BI agent docs live in a repo named `skills-for-fabric`. Only its local-authoring files are used; see `skills-for-fabric/APPLICABILITY.md`.
+3. Every PBIP contains `.platform` metadata files, which Desktop writes; they're harmless.
+
+Publishing is **Power BI Desktop → Pro/PPU workspace**, which is standard Power BI on the tenant's shared capacity.
 
 ## First implementation step
 

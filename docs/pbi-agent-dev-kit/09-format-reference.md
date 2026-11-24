@@ -65,7 +65,7 @@ This is a condensed reference compiled from the vendored sources. Full texts:
 { "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
   "version": "4.0",
   "datasetReference": { "byPath": { "path": "../<Name>.SemanticModel" } } }
-// For Fabric REST deployment (optional adapter) use byConnection: { "connectionString": "semanticmodelid=<id>" }.
+// byConnection (used only for Fabric REST deployment) is OUT OF SCOPE for this kit. Always use byPath.
 // Do not add "byConnection": null next to byPath. Relative paths with forward slashes only.
 
 // <Name>.SemanticModel/definition.pbism

@@ -27,7 +27,7 @@ The user said PBIP isn't mandatory. Alternatives considered:
 | PBIX | Binary (zip with an ABF model). Can't be authored or validated as text. Rejected. |
 | PBIT template | Legacy zip containing TMSL + PBIR-Legacy layout JSON, with an undocumented layout format. Rejected. |
 | Build via TOM/.NET against Desktop's Analysis Services instance | Needs .NET, Desktop running, and fragile port discovery. Only covers the model, not the report. Rejected as the primary path. The Modeling MCP is used for **read/validate** only. |
-| Fabric REST create-with-definition | Still needs PBIP-format parts. Whether it works in Pro workspaces is unverified, so it's an optional publish adapter (§10 of `10-tooling-reference.md`). |
+| Fabric REST create-with-definition | **Out of scope.** Fabric isn't approved in the owner's organization. Publishing is done from Power BI Desktop to a Pro/PPU workspace. |
 
 ### D2: Copilot harness constraints shape the orchestration
 
@@ -107,6 +107,14 @@ Agents must not paste raw data into chat beyond what the profile shows. MCP quer
 - The Modeling MCP is pre-installed and launched with `node <path>/index.js` from a generated `.mcp.json`. That avoids `npx -y`, which downloads packages at startup.
 - The kit runs from source (`PYTHONPATH`), so there's no `pip install`.
 - Components that only have admin installers are avoided: the data gateway is avoided by SharePoint mode, and long-path support by keeping paths short.
+
+### D10: No Fabric: what "Fabric" in the bundle means
+- **Not used:** Fabric capacity, Fabric items (lakehouses, notebooks, …), Fabric REST APIs (`api.fabric.microsoft.com`), the Fabric CLI, Direct Lake, XMLA endpoints, Fabric Git integration, deployment pipelines.
+- **Name-only appearances (safe):**
+  - the PBIP JSON schemas are published under `developer.microsoft.com/json-schemas/fabric/…`; they're offline file-format definitions
+  - every PBIP folder contains `.platform` files (git-integration metadata); Desktop writes them for every project, and they're harmless
+  - Microsoft's Power BI agent docs live in a repo called `skills-for-fabric`; only the local-authoring files are used (`vendor/skills-for-fabric/APPLICABILITY.md`)
+- **Publishing:** Desktop → Pro/PPU workspace. This is standard Power BI running on the tenant's *shared capacity* (Microsoft's licensing docs describe Pro/PPU workspaces this way). It isn't a Fabric capacity and needs no Fabric approval.
 
 ## 3. Component diagram
 

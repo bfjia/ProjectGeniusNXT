@@ -23,6 +23,7 @@
 3. **Assume no admin rights.** Use only user-writable locations (e.g. `%USERPROFILE%\pbi\…`). Never require elevation.
 4. **Start with the read-only environment check** (`11-environment-check.md`).
 5. **Running** existing tools (python, pytest, node, the installed `powerbi-*` CLIs, `copilot`) is fine. Writing files inside the kit repository is fine.
+6. **No Fabric.** Don't implement or call anything that needs Microsoft Fabric. "Fabric" appears in vendored names only because of where Microsoft publishes the files: the JSON schemas live under `json-schemas/fabric/`, and the Power BI skills live in the `skills-for-fabric` repo. Use only the files marked applicable in `vendor/skills-for-fabric/APPLICABILITY.md`.
 
 ## Bundle contents
 
@@ -62,7 +63,8 @@
    - Sources come in through M parameters, in `local` mode (`SourceFolder`) or `sharepoint` mode (`SharePointSite` + `SharePointFolder`).
    - **Development always uses a local copy** of the spreadsheets.
    - For production, the owner supplies a SharePoint/OneDrive for Business link, and `pbi set-source --sharepoint-url` switches the mode and rebuilds. No gateway is needed. A local-mode production model needs a gateway.
-   - Publishing goes through Desktop to Pro/PPU. Fabric REST publishing is an optional adapter that's off by default and unverified on Pro.
+   - Publishing goes through Power BI Desktop to a Pro/PPU workspace. That's standard Power BI on the tenant's shared capacity, not Fabric.
+   - **Fabric isn't approved in the owner's organization**, so the kit uses **no Fabric capacity, Fabric items, Fabric REST APIs, Fabric CLI, Direct Lake, or XMLA endpoints**. Automated (REST) publishing is out of scope.
 7. **The owner's blank PBIP is the format source of truth.** The generator copies its `$schema` versions and boilerplate. An optional "visual gallery" PBIP, harvested from the owner's Desktop, version-matches the visual templates.
 8. **Gates are configurable.** `mode: gated|fast`; the gates are `kpis`, `design` and `publish`. The publish gate is always enforced. Every assumption is logged and surfaced.
 

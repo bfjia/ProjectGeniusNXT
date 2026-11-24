@@ -44,7 +44,7 @@ This repository turns spreadsheets plus user context into a documented Power BI 
 - No GitHub access. Don't try to fetch from github.com. Use `reference/`.
 - No admin rights. All tools are installed per-user by the user (Node 22 and the Microsoft npm tools live in the `pbiagent` conda env).
 - Power BI Desktop runs on Windows. Desktop-dependent steps (refresh, DAX via MCP, screenshots) need the user's Windows session.
-- Import mode only. No Fabric capacity.
+- Import mode only. **Fabric isn't approved.** Never use Fabric capacity, Fabric items, Fabric REST APIs (`api.fabric.microsoft.com`), the Fabric CLI, Direct Lake, XMLA endpoints, or MCP connections to a service workspace. Publishing is done by the user from Power BI Desktop to a Pro/PPU workspace. In `reference/microsoft-skills-for-fabric/`, follow only the files marked applicable in its `APPLICABILITY.md`.
 ````
 
 ## 2. `.github/copilot-instructions.md`
@@ -172,7 +172,7 @@ description: Prepares a validated PBI Agent Kit dashboard for publishing to a Po
 tools: ['read', 'edit', 'search', 'execute']
 skills: ['pbi-publish']
 ---
-Read `AGENTS.md`, then follow `/pbi-publish`. Publishing is outward-facing: never claim it is done until the user confirms. Never attempt automated publishing unless the user explicitly enables it in `project.yaml` (`publish.automated: true`) and has verified it once.
+Read `AGENTS.md`, then follow `/pbi-publish`. Publishing is outward-facing: never claim it is done until the user confirms. Automated publishing (Fabric REST APIs) is out of scope, because Fabric isn't approved. The user publishes from Power BI Desktop.
 ````
 
 ---

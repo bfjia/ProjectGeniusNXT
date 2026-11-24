@@ -57,7 +57,7 @@
 | S-10 **[Win]** | Power BI Desktop (Store) | `Get-AppxPackage -Name *PowerBIDesktop* \| Select Name, Version` | One of S-09/S-10 is present; record the version (≥ the September 2026 release). |
 | S-11 | Microsoft Power BI npm tools (already installed?) | `powerbi-report-author --version`, `powerbi-desktop --help` | Record present or absent (they're installed later in M0/M6). |
 | S-12 | npm global install permission | `Test-Path -PathType Container (npm config get prefix)`, then try creating and deleting a temp file in that folder | Writable (with conda's Node the prefix is inside the env). If not → report it to the owner. Don't change the prefix yourself. |
-| S-13 | Azure CLI (optional, REST publish only) | `az --version` | Optional. |
+| S-13 | Azure CLI | not needed | REST publishing is out of scope (no Fabric). Don't check or use it. |
 | S-14 **[Win]** | On-premises data gateway (only relevant for local-mode production) | `Get-Service *gateway* -ErrorAction SilentlyContinue`; `Get-Process *gateway* -ErrorAction SilentlyContinue` | Record it. Not needed for development, or for SharePoint-mode production. |
 
 ## 4. Policies and settings
@@ -76,8 +76,8 @@
 | ID | Item | How the agent checks | Owner-confirm question if unknown |
 |---|---|---|---|
 | A-01 | GitHub Copilot subscription works | P-03 passes | "Do you have an active Copilot subscription on this machine's GitHub account?" |
-| A-02 | Power BI license (Pro or PPU) | Can't be checked offline. Optional: if `az` is signed in, `az account get-access-token --resource https://analysis.windows.net/powerbi/api` (record success only), then `GET https://api.powerbi.com/v1.0/myorg/groups` (count of workspaces) | "Is your Power BI license Pro or PPU?" |
-| A-03 | Test workspace + role | Optional via the same REST call: the workspace name appears in `groups` | "Which workspace should the publish test use, and are you at least Contributor?" |
+| A-02 | Power BI license (Pro or PPU) | Can't be checked automatically. Owner-confirm. | "Is your Power BI license Pro or PPU?" |
+| A-03 | Test workspace + role | Owner-confirm. It's a Pro/PPU workspace; no Fabric capacity is involved. | "Which workspace should the publish test use, and are you at least Contributor?" |
 | A-04 | SharePoint / OneDrive for Business access for production data | N-10 reachability only | "Which SharePoint/OneDrive folder will hold the production spreadsheets? Can the account that will own the dataset open it?" |
 | A-05 | Gateway rights (only for local-mode production) | S-14 + M-07 | "If production files stay on a local or network drive, can you install the on-premises data gateway (personal mode) on an always-on machine?" |
 

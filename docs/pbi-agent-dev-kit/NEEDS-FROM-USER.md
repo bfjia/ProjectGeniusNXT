@@ -38,7 +38,7 @@ This file lists everything the plan (`00-PLAN.md`) needs from you: decisions to 
 | Locale / currency / fiscal year start | `en-US` / `USD` / January | e.g. `en-CA` / `CAD` / April | Drives date/number parsing, format strings and the fiscal columns. Set per project in `project.yaml`. |
 | Theme | Neutral corporate (`08-report-design.md` §5) | Your brand colors (§4.4) | Only cosmetic. |
 | Use of the Modeling MCP | Enabled, **read-only**, DAX reconciliation only | Disabled (manual paste of DAX results) | Without it, QA asks you to paste query results from Desktop's DAX query view. |
-| Automated (REST) publishing | **Off** (publish from Desktop) | On, after a successful test on a throwaway workspace | Fabric REST on Pro workspaces is undocumented. Desktop publish always works. |
+| Automated (REST) publishing | **Out of scope.** Fabric isn't approved; publish from Desktop | n/a | The kit uses no Fabric capacity, Fabric items or Fabric APIs. |
 | Version control | Local `git`, no remote | A remote of your choice | Generated PBIPs diff cleanly in git. |
 | Hosts to support | VS Code (Copilot harness) **and** Copilot CLI | One of them | Both are designed for; both get tested in M8/M10. |
 
@@ -61,7 +61,7 @@ The implementation agent verifies everything it can on the implementation comput
    - conda-forge packages (the `environment.yml` list).
    - VS Code extensions (GitHub Copilot + Chat, TMDL, Python, YAML).
    - **If the public npm registry, conda-forge or the Marketplace are blocked:** ask IT for the internal mirror URLs and give them to the implementer. **Fallback without npm:** the kit still works (Python core + vendored schemas), but you lose official PBIR validation, Desktop reload/screenshots and MCP reconciliation; reconciliation becomes manual.
-3. **Power BI.** A Pro (or PPU) license, plus a **test workspace** where you're at least Contributor (for the publish test in M10). Give the workspace name to the implementer. No Fabric capacity is needed.
+3. **Power BI.** A Pro (or PPU) license, plus a **test workspace** where you're at least Contributor (for the publish test in M10). Give the workspace name to the implementer. **No Fabric is needed or used.** Pro/PPU workspaces are standard Power BI on the tenant's shared capacity. If you're unsure, confirm with IT that "publishing Power BI reports and semantic models from Power BI Desktop to our Pro workspace" is allowed. That's the only service action the kit needs.
 4. **Power BI Desktop policies.** The Desktop Bridge must not be disabled by policy: check that the registry value `HKLM\SOFTWARE\Policies\Microsoft\Power BI Desktop\DesktopNamedPipeBridge` is absent or `1`.
 5. **Refresh in the service:**
    - SharePoint mode: access to the SharePoint/OneDrive for Business folder (give the site URL and folder path, §5).
